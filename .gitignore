@@ -1,0 +1,9 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+
+# local tooling / preview config
+.claude/
+
+# duplicate source of index.html (kept locally, not published)
+スマートFIRE LP (standalone).html
