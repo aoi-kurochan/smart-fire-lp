@@ -140,6 +140,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const overflowFix = '<style id="mobile-responsive-fix">' +
       'html,body{overflow-x:hidden!important;max-width:100%!important}' +
       '@media (max-width:680px){' +
+        '#dc-root [style*="grid-template-columns"]{grid-template-columns:1fr!important}' +
         '#dc-root header>div[data-dc-tpl="16"]{grid-template-columns:1fr!important;gap:28px!important;padding:56px 24px 64px!important}' +
         '#dc-root header h1{font-size:30px!important;line-height:1.4!important}' +
         '#dc-root header>div[data-dc-tpl="16"]>div:nth-child(2){width:100%!important}' +
