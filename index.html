@@ -157,10 +157,25 @@ document.addEventListener('DOMContentLoaded', async function() {
         '#dc-root h2{font-size:24px!important}' +
       '}' +
       '</style>';
+
+    // Targeted line-break fixes. A few headings/captions break at awkward points
+    // on phones — mid-word ("辞めずに、ゆる/く自由"), orphan kana ("の？", "す。").
+    // CSS alone can't choose where Japanese text wraps, so after the design
+    // renders we wrap each desired segment in a nowrap <span> joined by <wbr>:
+    // the break can then only fall at the intended boundary, and only when the
+    // line actually needs to wrap — so desktop (where it fits) is unaffected.
+    // Targeted by stable data-dc-tpl ids; the FAQ item (tpl 158) is left alone.
+    const lineBreakFix = `<script>(function(){
+var T=[["79",[["辞めずに、ゆるく",0],["自由になる。",0]]],["68",[["どんな人が",0],["書いているの？",0]]],["178",[["※ 登録フォームはこの場所に後ほど",0],["連携します。",1],["登録は無料・いつでも1クリックで",0],["解除できます。",0]]]];
+function build(el,p){el.textContent="";for(var i=0;i<p.length;i++){var s=document.createElement("span");s.style.whiteSpace="nowrap";s.textContent=p[i][0];el.appendChild(s);el.appendChild(document.createElement(p[i][1]?"br":"wbr"));}}
+function apply(){var d=0;for(var i=0;i<T.length;i++){var el=document.querySelector('#dc-root [data-dc-tpl="'+T[i][0]+'"]');if(el){if(!el.getAttribute("data-wrapfix")){el.setAttribute("data-wrapfix","1");build(el,T[i][1]);}d++;}}return d;}
+var n=0,iv=setInterval(function(){n++;if(apply()>=T.length||n>60)clearInterval(iv);},120);
+})();<\/script>`;
+
     const headOpen2 = template.match(/<head[^>]*>/i);
     if (headOpen2) {
       const j = headOpen2.index + headOpen2[0].length;
-      template = template.slice(0, j) + overflowFix + template.slice(j);
+      template = template.slice(0, j) + overflowFix + lineBreakFix + template.slice(j);
     }
 
     // Parse the template and swap the root element. Scripts inserted via
