@@ -130,11 +130,25 @@ document.addEventListener('DOMContentLoaded', async function() {
       template = template.slice(0, i) + resourceScript + template.slice(i);
     }
 
-    // Mobile fix: prevent horizontal overflow/scroll on narrow viewports.
-    // Decorative blobs and the hero portrait extend past the right edge on
-    // phones; clip them at the page level so content always fits the screen.
-    const overflowFix = '<style id="mobile-overflow-fix">' +
+    // Mobile responsive fix. The hero is a fixed 2-column grid that never
+    // collapses on phones: the heading is squeezed into a narrow column (so it
+    // wraps into many lines and looks "stretched") and the author portrait
+    // overflows off the right edge (so it gets clipped). On narrow viewports we
+    // collapse the hero to a single column, shrink the heading, and cap the
+    // portrait so the whole layout fits the screen. !important is required to
+    // win over the design's inline styles.
+    const overflowFix = '<style id="mobile-responsive-fix">' +
       'html,body{overflow-x:hidden!important;max-width:100%!important}' +
+      '@media (max-width:680px){' +
+        '#dc-root header>div[data-dc-tpl="16"]{grid-template-columns:1fr!important;gap:28px!important;padding:56px 24px 64px!important}' +
+        '#dc-root header h1{font-size:30px!important;line-height:1.4!important}' +
+        '#dc-root header>div[data-dc-tpl="16"]>div:nth-child(2){width:100%!important}' +
+        '#dc-root header>div[data-dc-tpl="16"]>div:nth-child(2)>span{width:168px!important;height:168px!important}' +
+      '}' +
+      '@media (max-width:380px){' +
+        '#dc-root header h1{font-size:27px!important}' +
+        '#dc-root header>div[data-dc-tpl="16"]>div:nth-child(2)>span{width:148px!important;height:148px!important}' +
+      '}' +
       '</style>';
     const headOpen2 = template.match(/<head[^>]*>/i);
     if (headOpen2) {
