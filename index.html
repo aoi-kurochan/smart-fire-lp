@@ -142,13 +142,19 @@ document.addEventListener('DOMContentLoaded', async function() {
       '@media (max-width:680px){' +
         '#dc-root [style*="grid-template-columns"]{grid-template-columns:1fr!important}' +
         '#dc-root header>div[data-dc-tpl="16"]{grid-template-columns:1fr!important;gap:28px!important;padding:56px 24px 64px!important}' +
-        '#dc-root header h1{font-size:30px!important;line-height:1.4!important}' +
+        '#dc-root header h1{font-size:30px!important;line-height:1.4!important;text-wrap:balance}' +
         '#dc-root header>div[data-dc-tpl="16"]>div:nth-child(2){width:100%!important}' +
         '#dc-root header>div[data-dc-tpl="16"]>div:nth-child(2)>span{width:168px!important;height:168px!important}' +
+        // Headings wrap awkwardly on phones — orphan characters ("の？", "か。")
+        // and mid-word breaks ("ど/うなる"). Balance the lines so breaks fall at
+        // natural points, and shrink the large section titles (h2) slightly.
+        '#dc-root h2,#dc-root h3{text-wrap:balance;word-break:normal!important}' +
+        '#dc-root h2{font-size:27px!important;line-height:1.5!important}' +
       '}' +
       '@media (max-width:380px){' +
         '#dc-root header h1{font-size:27px!important}' +
         '#dc-root header>div[data-dc-tpl="16"]>div:nth-child(2)>span{width:148px!important;height:148px!important}' +
+        '#dc-root h2{font-size:24px!important}' +
       '}' +
       '</style>';
     const headOpen2 = template.match(/<head[^>]*>/i);
